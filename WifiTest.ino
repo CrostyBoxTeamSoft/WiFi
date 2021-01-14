@@ -5,13 +5,13 @@
 
 DynamicJsonDocument  doc(200);
 
-char ssid[] = "Bangladesh";
-char pass[] = "Ferdous99";
+char ssid[] = ""; //WiFi network's name
+char pass[] = ""; //WiFi network's password
 
 int status = WL_IDLE_STATUS;
 
-IPAddress server(91,174,249,33); 
-int port = 4545;
+IPAddress server(91,174,249,33); //Server's IP adress
+int port = 4545;                //Server's port
 
 String HOST = "91.174.249.33";
 
@@ -29,7 +29,7 @@ HttpClient client = HttpClient(wifi, server, port);
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  /*while(!Serial)
+  while(!Serial)
   {
     Serial.println("Wait for serial port to connect");
     delay(1000);
@@ -49,9 +49,9 @@ void setup() {
   }
 
   Serial.println("Scanning available networks");
-  listNetworks();*/
+  listNetworks();
 
-  while(status!=WL_CONNECTED)
+  while(status!=WL_CONNECTED) //Try to connect to the WiFi, every 10sec in case of unsuccessful connection
   {
     Serial.print("Attempting to connect to SSID : ");
     Serial.println(ssid);
@@ -61,12 +61,12 @@ void setup() {
     delay(10000);
   }
 
-  /*Serial.println("Connected to Wifi");
-  printWifiStatus();*/
+  Serial.println("Connected to Wifi");
+  printWifiStatus();
 
   Serial.println("\nStarting connecting to server");
   
-  if(client.connect(server,port))
+  if(client.connect(server,port))   //Connection to server, if success, sending a post request and reading the response, once
   {
     Serial.println("Connected to server");
 
@@ -136,13 +136,13 @@ void postRequest(String path, String postData)
 
 void printWifiStatus() {
 
-  // print the SSID of the network you're attached to:
+  // print the SSID of the network 
 
   Serial.print("SSID: ");
 
   Serial.println(WiFi.SSID());
 
-  // print your board's IP address:
+  // print Arduino's IP address:
 
   IPAddress ip = WiFi.localIP();
 
@@ -161,7 +161,7 @@ void printWifiStatus() {
   Serial.println(" dBm");
 }
 
-//List all the surronding network available
+//List all the surronding network available in a String variable (print for debug purpose)
 String listNetworks()
 {
   String data;
@@ -249,6 +249,7 @@ void printEncryptionType(int thisType)
   }
 }
 
+//Create a client for post request
 String createClient()
 {
   DynamicJsonDocument doc(200);
