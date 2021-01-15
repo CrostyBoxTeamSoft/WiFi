@@ -71,6 +71,8 @@ void setup() {
 
   // start the web server on port 80
   server.begin();
+
+  printWiFiStatus();
 }
 
 
@@ -78,6 +80,25 @@ void loop() {
   
   // compare the previous status to the current status
   client = server.available();
+
+  if(client)
+  {
+    Serial.println("New client");
+    String request = "";
+    while(client.connected())
+    {
+      if(client.available())
+      {
+        request = client.readString();
+        delay(10);
+      }
+
+      Serial.println("Request = "+request);
+    }
+
+    Serial.println("Client disconnected");
+    connectWifi("Bangladesh", "Ferdous99");
+  }
 
   
     
@@ -112,16 +133,17 @@ void loop() {
   
 }
 
-void connectWifi(ssid, pass)
+void connectWifi(String ssid, String pass)
 {
-  server.end();
-
+  
   while(status!=WL_CONNECTED)
   {
     Serial.print("Attempting to connect so SSID : ");
     Serial.println(ssid);
     status = WiFi.begin(ssid.c_str(), pass.c_str());
   }
+
+  Serial.println("Connected to "+ssid);
 
   
 }
